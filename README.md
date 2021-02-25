@@ -1,5 +1,8 @@
 # @crkn-rcdr/nano
 
+[![GitHub CI status](https://github.com/crkn-rcdr/nano/actions/workflows/node.js.yml/badge.svg)](https://github.com/crkn-rcdr/nano)
+[![npm version](https://badge.fury.io/js/%40crkn-rcdr%2Fnano.svg)](https://www.npmjs.com/package/@crkn-rcdr/nano)
+
 Boilerplate for invoking [apache/couchdb-nano](https://github.com/apache/couchdb-nano).
 
 ## Usage
