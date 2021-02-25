@@ -9,7 +9,6 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "dist",
-    "removeComments": true,
     "target": "ES2015",
 
     "strict": true,
