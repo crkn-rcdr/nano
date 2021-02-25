@@ -24,7 +24,10 @@
   "scripts": {
     "test": "mocha",
     "build": "npm test && tsc",
-    "release": "standard-version"
+    "release": "HUSKY=0 standard-version",
+    "prepublishOnly": "pinst --disable",
+    "postinstall": "husky install",
+    "postpublish": "pinst --enable"
   },
   "engines": {
     "node": ">= 10.0.0"
@@ -36,7 +39,9 @@
     "chai": "^4.3.0",
     "commitizen": "^4.2.3",
     "cz-conventional-changelog": "^3.2.0",
+    "husky": "^5.1.1",
     "mocha": "^8.3.0",
+    "pinst": "^2.1.6",
     "standard-version": "^9.1.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.2"
