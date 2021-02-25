@@ -1,6 +1,5 @@
 {
   "name": "@crkn-rcdr/nano",
-  "version": "1.0.0",
   "description": "Boilerplate for invoking apache/couchdb-nano",
   "contributors": [
     "Sascha Adler <sadler@crkn.ca> (https://github.com/SaschaAdler)"
@@ -23,7 +22,8 @@
   "types": "dist/Nano.d.ts",
   "scripts": {
     "test": "mocha",
-    "build": "npm test && tsc"
+    "build": "npm test && tsc",
+    "release": "standard-version"
   },
   "engines": {
     "node": ">= 10.0.0"
@@ -36,6 +36,7 @@
     "commitizen": "^4.2.3",
     "cz-conventional-changelog": "^3.2.0",
     "mocha": "^8.3.0",
+    "standard-version": "^9.1.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.2"
   },
