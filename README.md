@@ -8,7 +8,7 @@ Boilerplate for invoking [apache/couchdb-nano](https://github.com/apache/couchdb
 ## Usage
 
 ```js
-import Nano from "@crkn-rcdr/nano";
+import * as Nano from "@crkn-rcdr/nano";
 
 const auth = {
   user: "admin",

@@ -1,4 +1,4 @@
-import Nano from "./Nano";
+import * as Nano from "./Nano";
 import { expect } from "chai";
 
 const exampleUrl = "http://example.com:5984";
@@ -33,7 +33,6 @@ describe("Nano.get(url, auth?)", () => {
   ["user", "password"].map((field) => {
     it(`Throws a TypeError if auth is provided solely with ${field}`, () => {
       const noField = () => {
-        // @ts-expect-error
         Nano.get(exampleUrl, incompleteAuth[field]);
       };
       expect(noField).to.throw(TypeError);

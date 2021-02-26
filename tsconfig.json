@@ -2,8 +2,6 @@
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.test.ts"],
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true,
     "declaration": true,
     "isolatedModules": true,
     "module": "commonjs",

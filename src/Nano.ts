@@ -1,60 +1,66 @@
-import * as nano from "nano";
+import * as CouchDBNano from "nano";
 
-interface AuthOptions {
+interface BasicAuth {
   readonly user: string;
   readonly password: string;
 }
 
+interface NoAuth {}
+
+export type Auth = BasicAuth | NoAuth;
+
 type Scheme = "http" | "https";
 
 /**
- * Class providing static methods for creating couchdb-nano instances.
+ * Create a couchdb-nano instance pointing to a CouchDB server. Basic authentication parameters can also be supplied.
+ * @param url The CouchDB server to which nano requests will be sent.
+ * @param [auth={}] Authentication parameters.
+ * @returns The nano instance.
  */
-class Nano {
-  /**
-   * Create a couchdb-nano instance pointing to a CouchDB server. Basic authentication parameters can also be supplied.
-   * @param {string} url The CouchDB server to which nano requests will be sent.
-   * @param {AuthOptions} [auth] Basic authentication parameters.
-   * @returns {nano.ServerScope} The nano instance.
-   */
-  static get(url: string, auth?: AuthOptions): nano.ServerScope {
-    try {
-      new URL(url);
-    } catch (_) {
-      throw new TypeError("Nano.get must be called with a valid absolute URL.");
-    }
+const get = (url: string, auth: Auth = {}): CouchDBNano.ServerScope => {
+  try {
+    new URL(url);
+  } catch (_) {
+    throw new TypeError("A valid absolute URL is required.");
+  }
 
-    if (
-      auth &&
-      ((auth.user && !auth.password) || (!auth.user && auth.password))
-    ) {
+  const isBasic = (auth: Auth): auth is BasicAuth => {
+    if ("password" in auth && !("user" in auth)) {
       throw new TypeError(
-        "Authentication options require both a user and a password."
+        "A user must be supplied to use basic authentication."
       );
     }
 
-    return nano({
-      url,
-      requestDefaults: auth
-        ? { auth: { username: auth.user, password: auth.password } }
-        : undefined,
-    });
-  }
+    if ("user" in auth && !("password" in auth)) {
+      throw new TypeError(
+        "A password must be supplied to use basic authentication."
+      );
+    }
 
-  /**
-   * Create a couchdb-nano instance pointing to a CouchDB server running locally, at a given port. Basic authentication parameters can also be supplied.
-   * @param {number} port Port on the local machine CouchDB is being served at.
-   * @param {AuthOptions} [auth] Basic authentication parameters.
-   * @param {Scheme} [scheme="http"] URL scheme to use. "http" and "https" are supported.
-   * @returns {nano.ServerScope} The nano instance.
-   */
-  static localhost(
-    port: number,
-    auth?: AuthOptions,
-    scheme: Scheme = "http"
-  ): nano.ServerScope {
-    return Nano.get(`${scheme}://localhost:${port}/`, auth);
-  }
-}
+    return "user" in auth;
+  };
 
-export default Nano;
+  return CouchDBNano({
+    url,
+    requestDefaults: isBasic(auth)
+      ? { auth: { username: auth.user, password: auth.password } }
+      : undefined,
+  });
+};
+
+/**
+ * Create a couchdb-nano instance pointing to a CouchDB server running locally, at a given port. Basic authentication parameters can also be supplied.
+ * @param port Port on the local machine CouchDB is being served at.
+ * @param [auth={}] Basic authentication parameters.
+ * @param [scheme=http] URL scheme to use. "http" and "https" are supported.
+ * @returns The nano instance.
+ */
+const localhost = (
+  port: number,
+  auth: Auth = {},
+  scheme: Scheme = "http"
+): CouchDBNano.ServerScope => {
+  return get(`${scheme}://localhost:${port}/`, auth);
+};
+
+export { get, localhost };
