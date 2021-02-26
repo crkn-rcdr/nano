@@ -1,6 +1,6 @@
 {
   "name": "@crkn-rcdr/nano",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Boilerplate for invoking apache/couchdb-nano",
   "contributors": [
     "Sascha Adler <sadler@crkn.ca> (https://github.com/SaschaAdler)"
