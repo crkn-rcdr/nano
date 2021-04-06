@@ -1,4 +1,6 @@
 import * as CouchDBNano from "nano";
+import { Agent as HttpAgent } from "http";
+import { Agent as HttpsAgent } from "https";
 
 interface BasicAuth {
   readonly user: string;
@@ -40,11 +42,18 @@ const get = (url: string, auth: Auth = {}): CouchDBNano.ServerScope => {
     return "user" in auth;
   };
 
+  const authConfig = isBasic(auth)
+    ? { auth: { username: auth.user, password: auth.password } }
+    : {};
+
   return CouchDBNano({
     url,
-    requestDefaults: isBasic(auth)
-      ? { auth: { username: auth.user, password: auth.password } }
-      : undefined,
+    requestDefaults: {
+      ...authConfig,
+      // @ts-ignore
+      httpAgent: new HttpAgent({ maxSockets: 1 }),
+      httpsAgent: new HttpsAgent({ maxSockets: 1 }),
+    },
   });
 };
 
